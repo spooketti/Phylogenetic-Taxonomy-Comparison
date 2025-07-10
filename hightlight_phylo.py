@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 # Load trees
-domain = Tree("data/domain/Domain.newick", format=1)
+phylo = Tree("data/phylotree/Phylo.newick", format=1)
 
 family_colors = {
     "Bionectriaceae": "#1f77b4",   
@@ -24,7 +24,7 @@ taxon_family = {}
 with open(BASE_DIR / "data/domain/highlight.json", 'r',encoding="utf-8") as file:
     taxon_family = json.load(file)
 
-for leaf in domain.iter_leaves():
+for leaf in phylo.iter_leaves():
     leaf_name = leaf.name
     matched = False
     for family_name, species_list in taxon_family.items():
@@ -47,7 +47,7 @@ for leaf in domain.iter_leaves():
 
 ts = TreeStyle()
 ts.show_leaf_name = True
-ts.title.add_face(TextFace("Leaf Groups Colored By Domain (UCLA UMap)", fsize=12), column=0)\
+ts.title.add_face(TextFace("Leaf Groups Colored (Color Transfer from Domain to PhyloT)", fsize=12), column=0)\
 
 for family, color in family_colors.items():
     color_face = faces.RectFace(width=10, height=10, fgcolor=color, bgcolor=color)
@@ -55,5 +55,5 @@ for family, color in family_colors.items():
     ts.legend.add_face(color_face, column=0)
     ts.legend.add_face(text_face, column=1)
 
-domain.show(tree_style=ts)
-domain.render("domain.png",tree_style=ts)
+phylo.show(tree_style=ts)
+phylo.render("phylo.png",tree_style=ts)
